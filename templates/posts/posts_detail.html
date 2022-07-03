@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ post.title }}</h1>
+            <div class="row">
+                <div class="col">
+                    <strong>{{ post.author.username }}</strong>
+                    <small>{{ post.created_at|date:"y/m/d H:i" }}</small>
+                    {% if user.is_authenticated %}
+                        <small>{{ post.likes }} likes</small>
+                        {% if user in post.liked_users.all %}
+                            <a href="{% url "posts:post_like" post.id %}">♥</a>
+                        {% else %}
+                            <a href="{% url "posts:post_like" post.id %}">♡</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                        <span>{{ post.likes }} likes ♡</span>
+                    {% endif %}
+                    {% comment %} {% if post.author.id == user.id %}
+                        <a href="{% url "posts:edit" post.id %}">Edit</a>
+                        <a href="{% url "posts:delete" post.id %}">Delete</a>
+                    {% endif %} {% endcomment %}
+                    <div class="my-3">
+                        {% if request.user == post.author %}
+                        <a href="{% url 'posts:post_modify' post.id  %}" 
+                        class="btn btn-sm btn-outline-secondary">수정</a>
+                        <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'posts:post_delete' post.id  %}">삭제</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <p>{{ post.content|safe }}</p>
+            <hr>
+        </div>
+    </div>
+
+        {% if user.is_authenticated %}
+
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            {{form.as_table}}
+
+            <input class="btn btn-custom-common" type="submit" value="업로드 하기">
+        </form> 
+        {% endif %}
+        {% if not user.is_authenticated %}
+        <div class="row">
+            <div class="col"><small>댓글을 쓰려면 로그인이 필요합니다.</small></div>
+        </div>
+        {% endif %}
+
+    <br>
+    {% for comment in comments %}
+
+            <div class="col-md-12">
+
+                <strong>{{ comment.author.username }}</strong>
+                <small>{{ comment.created_at }}</small>
+                <p class="text-justify ">{{ comment.content }}</p> <!--safe????-->
+
+                
+            </div>
+
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}

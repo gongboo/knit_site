@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="margin-top: 10px;margin-bottom: 10px;">
+    <h1>전체 </h1>
+    <br>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h2>인기 게시물 <a class="btn btn-custom-common" role="button" href="{% url "posts:posts_index" %}">더보기</a></h2>
+                <!--strong>창작 배색 패턴</strong-->
+                
+
+                <table id="post-list-table">
+                    {% if most_liked_posts %}
+                    {% for post in most_liked_posts %}
+                    <tr class="post-list-tr">
+                        <td class="post-list-td"><a href={% url "posts:posts_detail" post.id %}><small
+                                    style="margin-right: 30px;font-size: 20px;">{{ post.title|truncatechars:10 }}</small></a></td>
+
+                        <!--td class="post-list-td"><small style="margin-right: 29px;">{{ post.author.username }}</small>
+                        </td-->
+
+                         <td class="post-list-td"><small style="margin-right: 29px;">{{ post.created_at|date:"y/m/d H:i" }}</small></td>
+                        <td class="post-list-td"><small>♥{{ post.likes }}</small></td>
+                        <!--댓글 갯수-->
+                        {% if question.answer_set.count > 0 %}
+                        <span class="text-danger small mx-2">{{ post.comment.count }}</span>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h2 >최근 게시물 <a class="btn btn-custom-common" role="button" href="{% url "posts:posts_index" %}">더보기</a></h2>
+
+                <!--strong>창작 배색 패턴</strong-->
+                
+
+                <table id="post-list-table">
+                    {% if recent_posts %}
+                    {% for post in recent_posts %}
+                    <tr class="post-list-tr">
+                        <td class="post-list-td"><a href={% url "posts:posts_detail" post.id %}><small style="margin-right: 30px;font-size: 20px;">{{ post.title|truncatechars:10 }}</small></a></td>
+
+
+                        <td class="post-list-td"><small style="margin-right: 29px;">{{ post.created_at|date:"y/m/d H:i" }}</small></td>
+
+                        <td class="post-list-td"><small>♥{{ post.likes }}</small></td>
+                        <!--댓글 갯수-->
+                        {% if question.answer_set.count > 0 %}
+                        <span class="text-danger small mx-2">{{ post.comment.count }}</span>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h2 style="margin-top: 10px;">최근 작성된 패턴 <a class="btn btn-custom-common" role="button" href="{% url "posts:patterns_index" %}">더보기</a></h2>
+
+    <!--strong>창작 배색 패턴</strong-->
+    
+
+    <div class="row">
+        {% for pattern in recent_patterns %}
+        <div class="col-md-4" style="padding: 12px 12px;">
+            <a href={% url "posts:patterns_detail" pattern.id%}>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col">
+                            <h4 class="card-title">{{ pattern.title }}</h4>
+                            <h6>♥{{ pattern.likes }}</p>
+                        </div>
+                        <h6 class="text-muted card-subtitle mb-2">{{ pattern.author.username }}</h6>
+                        <table class="pattern-table" id="table-{{ pattern.id }}">
+                        </table>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <script>
+            row_length = {{pattern.row_length}};
+            col_length = {{pattern.col_length}};
+            temp1 = ("{{ pattern.pattern_list }}").replaceAll('&#x27;', '\"').replaceAll('None', null);
+            console.log(temp1);
+            temp2 = JSON.parse(temp1);
+            console.log(temp2["pattern_list"]);
+
+            temp3 = ("{{ pattern.color_list }}").replaceAll('&#x27;', '\"');
+            temp4 = JSON.parse(temp3);
+            console.log(temp4["color_list"]);
+
+
+            if (col_length > 5) {
+                col_length = 5;
+            }
+            if (row_length > 5) {
+                row_length = 5;
+            }
+            for (i = 0; i < col_length; i++) {
+                new_tr = document.createElement('tr');
+                document.getElementById("table-{{ pattern.id }}").appendChild(new_tr);
+                for (j = 0; j < row_length; j++) {
+                    var new_td = document.createElement('td');
+                    new_td.setAttribute('class', 'pattern-cell');
+                    console.log(i, j, (temp2["pattern_list"][i][j]));
+                    if ((temp2["pattern_list"][i][j]) != null) {
+                        new_td.setAttribute('style', 'background-color:' + temp4["color_list"][Number((temp2[
+                            "pattern_list"][i][j]).split('-')[1])]);
+
+                    }
+                    new_tr.appendChild(new_td);
+                }
+            }
+        </script>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

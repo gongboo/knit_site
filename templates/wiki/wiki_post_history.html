@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ wikiPost.name }}</h1>
+            <a href="{% url 'wiki:wiki_post_detail' wikiPost.name  %}" class="btn btn-sm btn-outline-secondary">본문 보기</a>
+            {% for history in wikiPost.history.all %}
+            <div class="row">
+                <div class="col">
+                    {% comment %} <strong>{{ wikiPost.author.username }}</strong>
+                    <small>{{ wikiPost.created_at }}</small>
+                    <small>{{ wikiPost.created_at }}</small> {% endcomment %}
+                    <strong>{{ history.history_date }}</strong>
+                    <strong>{{ history.changed_by }}</strong>
+                    <a href="{% url 'wiki:wiki_post_history_detail' wikiPost.name history.history_id  %}" class="btn btn-sm btn-outline-secondary">변경 내역 보기</a>
+                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="container" >
+    <div id="color-buttons">
+        <div class="vstack color-button" style="float: left">
+            <input type ="color" id="color-0" onchange="changeColorInList(this)" value="rgb(0,0,0)"/>
+            <input type ="radio" name="colors" value="color-0" checked/>
+        </div>
+        <div class="vstack color-button" style="float: left">
+            <input type ="color" id="color-1" onchange="changeColorInList(this)" value="#ffffff"/>
+            <input type ="radio" name="colors" value="color-1"/>
+        </div>
+    </div>
+    <button class="btn btn-custom-common" id="color-add-button" type="button" onclick="makeNewColorButton()">+</button>
+</div>
+
+<div class="container" style="margin-bottom: 5px;margin-top: 5px;">
+    <small style="margin-right: 10px;font-size: 16px;">가로칸 수X 세로칸 수:&nbsp;</small>
+    <input type="number" style="width: 45px;" min="1" max="50" value="1" id="canvas-row">
+    <small style="margin-right: 5px;margin-left: 5px;">X</small>
+    <input type="number" style="width: 45px;margin-right: 13px;"  min="1" max="50" value="1" id="canvas-col">
+    <button class="btn btn-custom-common" type="button" onclick="makeCanvas();">표 생성</button>
+</div>
+<div class="container" id="pixel-canvas">
+    <table id="pixel-canvas-table" ></table>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                {{form.as_table}}
+
+                <input class="btn btn-custom-common" type="submit" onclick="updateHiddenValues()" value="업로드 하기">
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<!--button class="btn btn-primary" onclick="makeTableColorArr()">temp color log</button-->
+
+<script>
+    tableColor=[]
+    colors=["rgb(0,0,0)", "rgb(255,255,255)"]
+
+    function makeCanvas(){
+        row=document.getElementById("canvas-row").value;
+        column=document.getElementById("canvas-col").value;
+        console.log(row,column);
+        
+        if (document.getElementById("pixel-canvas-table")){
+            document.getElementById("pixel-canvas-table").remove();
+            console.log("삭제");
+        }
+        tableColor=[]//초기화
+        //colors=["rgb(0, 0, 0)","rgb(0, 0, 0)"]
+
+        var table=document.createElement("table");
+        table.setAttribute("id","pixel-canvas-table");
+        document.getElementById("pixel-canvas").appendChild(table);
+
+        for (let i=0;i<column;i++){
+            var new_tr=document.createElement("tr");
+            document.getElementById("pixel-canvas-table").appendChild(new_tr);
+            temp_list=[]
+            for (let j=0;j<row;j++){
+                var new_td=document.createElement("td");
+                //new_td.style.backgroundColor="#ffffff";
+                new_td.setAttribute("id",i+"-"+j);
+                new_td.setAttribute("class","create-pattern-cell");
+                new_td.setAttribute("style","background-color:rgb(255,255,255); padding:15px; border:1px solid rgb(163, 161, 161);");
+                //new_table.innerHTML="(current)"
+                //new_table.classList.add('sr-only') //클래스 추가
+                new_tr.appendChild(new_td);
+                temp_list.push("color-1");
+            }
+            tableColor.push(temp_list);
+            //var new_table=document.createElement('tr')
+            //new_table.innerHTML="(current)"
+            //new_table.classList.add('sr-only') //클래스 추가
+            //document.getElementById('pixel-canvas-table').appendChild(new_table);
+        }
+
+        //var table = document.getElementById("table");
+        var td = table.getElementsByTagName("td");
+        
+        for (var i = 0; i < td.length; i++) {
+            td[i].addEventListener("mousedown", function() {
+                console.log(this.style.backgroundColor);
+                if(this.style.backgroundColor!=document.getElementById(document.querySelector("input[name='colors']:checked").value).value){
+                    console.log(document.querySelector("input[name='colors']:checked"));
+                    this.style.backgroundColor = document.getElementById(document.querySelector("input[name='colors']:checked").value).value;
+                    //tableColor[i]=document.getElementById(document.querySelector("input[name='colors']:checked").value).value;
+                    //console.log(this.getAttribute("id").split("-"));
+                    //console.log(Number(this.getAttribute("id").split("-")[0])*row+Number(this.getAttribute("id").split("-")[1])+1);
+                    tableColor[Number(this.getAttribute("id").split("-")[0])][Number(this.getAttribute("id").split("-")[1])]=document.querySelector("input[name='colors']:checked").value;
+                }else{
+                    //this.style.backgroundColor = "rgb(255,255,255)";
+                    //tableColor[Number(this.getAttribute("id").split("-")[0])][Number(this.//getAttribute("id").split("-")[1])]="color-1";
+                }
+                console.log("mousedown");
+            });
+        }
+
+        document.getElementById("row_length").value=row;
+        document.getElementById("col_length").value=column;
+    }
+
+    function makeNewColorButton(){
+        var new_div=document.createElement("div");
+        new_div.setAttribute("class","vstack color-button");
+        new_div.style.float="left";
+        document.getElementById("color-buttons").appendChild(new_div);
+
+        var new_input=document.createElement("input");
+        new_input.setAttribute("type","color");
+        new_input.setAttribute("name","colors");
+        new_input.setAttribute("id","color"+"-"+(document.getElementsByClassName("color-button").length-1));
+        new_input.setAttribute("onchange","changeColorInList(this)");
+        new_div.appendChild(new_input);
+
+        var new_radio=document.createElement("input");
+        new_radio.setAttribute("type","radio");
+        new_radio.setAttribute("name","colors");
+        new_radio.setAttribute("value","color"+"-"+(document.getElementsByClassName("color-button").length-1));
+        new_div.appendChild(new_radio);
+
+
+        colors.push("#000000");
+        if (document.getElementsByClassName("color-button").length>8){
+            document.getElementById("color-add-button").remove();
+            
+        }
+    }
+
+    function makeTableColorArr(){
+        //tableColor=[]
+        //var table=document.getElementById("pixel-canvas-table");
+        //var td = table.getElementsByTagName("td");
+        //for (var i = 0; i < td.length; i++) {
+        //    tableColor.push(td[i].style.backgroundColor);
+        //}
+        console.log(colors);
+
+        console.log(tableColor);
+    } 
+
+    function addColorToList(){
+        colors.push("#000000");
+    }
+
+    function changeColorInList(selectedColorInput){
+        row=document.getElementById("canvas-row").value;
+        column=document.getElementById("canvas-col").value;
+        colors[selectedColorInput.id.split("-")[1]]=selectedColorInput.value;
+        
+        td=document.getElementsByTagName("td");
+        for (var i = 0; i < column; i++) {
+            for (var j = 0; j < row; j++) {
+                if (tableColor[i][j]==selectedColorInput.id){
+                    console.log(i*column+row);
+                    td[i*column+j].style.backgroundColor=selectedColorInput.value;
+                }
+                    
+            }
+        }
+    }
+
+    function updateHiddenValues(){
+        color_stringified=JSON.stringify({color_list:colors});
+        pattern_stringified=JSON.stringify({pattern_list:tableColor});
+        document.getElementById("color_list").value=color_stringified;
+        document.getElementById("pattern_list").value=pattern_stringified;
+    }
+</script>
+
+
+
+{% endblock %}

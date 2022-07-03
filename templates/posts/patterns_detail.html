@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ pattern.title }}</h1>
+            <div class="row">
+                <div class="col">
+                    <strong>{{ pattern.author.username }}</strong>
+                    <small>{{ pattern.created_at|date:"y/m/d H:i" }}</small>
+                    {% if user.is_authenticated %}
+                        <a href="{% url "posts:pattern_like" pattern.id %}">{{ pattern.likes }} likes</a>
+                        
+                        {% if user in pattern.liked_users.all %}
+                            <a href="{% url "posts:pattern_like" pattern.id %}">♥</a>
+                        {% else %}
+                            <a href="{% url "posts:pattern_like" pattern.id %}">♡</a>
+                        {% endif %}
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                        <span>{{ pattern.likes }} likes ♡</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="my-3">
+                {% if request.user == pattern.author %}
+                <!--a href="{% url 'posts:pattern_modify' pattern.id  %}" 
+                class="btn btn-sm btn-outline-secondary">수정</a-->
+                <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'posts:pattern_delete' pattern.id  %}">삭제</a>
+                {% endif %}
+            </div>
+            <table id="table" class="pattern-table">
+            </table>
+            <p>{{ pattern.comment }}</p>
+        </div>
+    </div>
+<table class="pattern-table">
+</table>
+<script>
+    row_length={{ pattern.row_length }};
+    col_length={{ pattern.col_length }};
+    temp1=("{{ pattern.pattern_list }}").replaceAll('&#x27;', '\"').replaceAll('None',null);
+    console.log(temp1);
+    temp2=JSON.parse(temp1);
+    console.log(temp2["pattern_list"]);
+
+    temp3=("{{ pattern.color_list }}").replaceAll('&#x27;', '\"');
+    temp4=JSON.parse(temp3);
+    console.log(temp4["color_list"]);
+
+
+    for(i=0;i<col_length;i++){
+        new_tr=document.createElement('tr');
+        document.getElementById('table').appendChild(new_tr);
+        for(j=0;j<row_length;j++){
+            var new_td=document.createElement('td');
+            new_td.setAttribute('class','pattern-cell');
+            console.log(i,j,(temp2["pattern_list"][i][j]));
+            if ((temp2["pattern_list"][i][j])!=null){
+                new_td.setAttribute('style', 'background-color:'+temp4["color_list"][Number((temp2["pattern_list"][i][j]).split('-')[1])]);
+
+            }
+            new_tr.appendChild(new_td);
+        }
+    } 
+</script>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
+{% endblock %}

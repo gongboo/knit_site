@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>knit</title>
+    <link rel="stylesheet" href="{% static "bootstrap.min.css"%}">
+    <link rel="stylesheet" href="{% static "style.css"%}?v=2">
+
+    <!--link rel="stylesheet" href="assets/css/Navbar-Right-Links.css"-->
+    <!--link rel="stylesheet" href="assets/css/styles.css"-->
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <br>
+    {% block content %}
+    {% endblock %}
+
+    {% include 'footer.html' %}
+    <script src={% static "bootstrap.min.js"%}></script>
+    <!--script src="assets/js/bs-init.js"></script-->
+    {% block script %}
+    {% endblock %}
+</body>
+
+</html>
