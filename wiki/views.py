@@ -61,6 +61,7 @@ def wiki_post_modify(request, wiki_post_name):
         if form.is_valid():
             wikiPost = form.save(commit=False)
             wikiPost.modify_date = timezone.now()  # 수정일시 저장
+            wikiPost.changed_by = request.user
             wikiPost.save()
             return redirect('wiki:wiki_post_detail', wiki_post_name=wikiPost.name)
     else:

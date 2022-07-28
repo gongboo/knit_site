@@ -28,7 +28,7 @@ a{
 }
 a:hover{
     text-decoration:none;
-    color:rgb(129, 193, 172);
+    color:var(--main-color);
 }
 p{
     word-wrap: break-word;
@@ -52,31 +52,43 @@ p{
     background-color: rgb(9, 141, 141);
 } */
 .btn-custom-common{
-    background-color: rgb(129, 193, 172);
+    background-color: var(--main-color);
     color: #fff;
 }
 .btn-custom-common:hover{
-    background-color: rgb(129, 193, 172);
+    background-color: var(--main-color);
     color: #fff;
 }
 .page-item.active .page-link {
     z-index: 3;
     color: #fff;
-    background-color: rgb(129, 193, 172);
-    border-color: rgb(129, 193, 172);
+    background-color: var(--main-color);
+    border-color: var(--main-color);
 }
 .page-link {
     position: relative;
     display: block;
-    color: rgb(129, 193, 172);
+    color: var(--main-color);
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #dee2e6;
     /* transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
 }
 .page-link:hover{
-    color: rgb(129, 193, 172);
+    color: var(--main-color);
 }
 img{
     width: 100% !important;
+}
+
+:root {
+    --main-color: #0064B0;
+}
+
+#logo{
+    fill: #0064B0;
+}
+
+.badge{
+    background-color: #949494;
 }

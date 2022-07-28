@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ wikiPost.name }}</h1>
+            <h2>{{ wikiPost.name }}</h2>
             <a href="{% url 'wiki:wiki_post_detail' wikiPost.name  %}" class="btn btn-sm btn-outline-secondary">본문 보기</a>
             <a href="{% url 'wiki:wiki_post_history_revert' wikiPost.name history.history_id  %}" class="btn btn-sm btn-outline-secondary">이 버전으로 되돌리기</a>
             {% if history.history_type == '+' %}

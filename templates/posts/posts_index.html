@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>자유 게시판 <a class="btn btn-custom-common" role="button" href={% url "posts:posts_create" %}>글쓰기</a></h1>
+            <h2>자유 게시판 <a class="btn btn-custom-common" role="button" href={% url "posts:posts_create" %}>글쓰기</a></h2>
         </div>
     </div>
 </div>
@@ -24,8 +24,9 @@
         <tr class="post-list-tr">
             <td class="post-list-td"><a href={% url "posts:posts_detail" post.id %}><small style="margin-right: 30px;font-size: 20px;">{{ post.title|truncatechars:10}}</small></a></td>
 
-            <td class="post-list-td"><small style="margin-right: 29px;">{{ post.author.username }}</small></td>
+            {% comment %} <td class="post-list-td"><small style="margin-right: 29px;">{{ post.author.username }}</small></td> {% endcomment %}
 
+            <td class="post-list-td"><small style="margin-right: 29px;">{{ post.author.profile.nickname }}</small></td> 
             <td class="post-list-td"><small style="margin-right: 29px;">{{ post.created_at|date:"y/m/d H:i" }}</small></td>
             <td class="post-list-td"><small>♥{{ post.likes }}</small></td>
             <!--댓글 갯수-->

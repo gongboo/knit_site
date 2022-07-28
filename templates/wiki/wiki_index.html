@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>뜨개 위키 <a class="btn btn-custom-common" role="button" href="{% url "wiki:wiki_post_create" %}">새로운 단어 추가하기</a></h1>
+            <h2>뜨개 위키 <a class="btn btn-custom-common" role="button" href="{% url "wiki:wiki_post_create" %}">새로운 단어 추가하기</a></h2>
         </div>
     </div>
 </div>
@@ -20,22 +20,32 @@
     </div>
 <br>
 
-<h3>뜨개질 위키 문서에 기여해주세요!</h3>
-<br>
 <h3>전체 추가된 항목</h3>
-<table id="post-list-table">
-{% if wikiPosts %}
-    {% for wikipost in wikiPosts %}
-        <tr class="post-list-tr">
-            <td class="post-list-td"><a href={% url "wiki:wiki_post_detail" wikipost.name %}><small style="margin-right: 30px;font-size: 20px;">{{ wikipost.name }}</small></a></td>
 
-            <td class="post-list-td"><small style="margin-right: 29px;">{{ wikipost.author.username }}</small></td>
+    <script>
+        a=" "
+    </script>
+    <div class="row">
+    {% if wikiPosts %}
+        {% for wikipost in wikiPosts %}
 
+                <script>
 
+                    temp="{{wikipost.name}}"
+                    if (a!=" " && a[0]!=temp[0]){
+                       document.write("</div>");
+                    }
+                    if (a[0]!=temp[0]){
+                        document.write("<div class='col-md-4'>");
+                        a="{{wikipost.name}}";
+                        document.write("<br><hr><h3>"+a[0]+"</h3>");
+                    }
+                </script>
+                <li><a href={% url "wiki:wiki_post_detail" wikipost.name %}><small style="margin-right: 30px;font-size: 20px;">{{ wikipost.name }}</small></a></li></td>
 
-        </tr>
-    {% endfor %}
-{% endif %}
+        {% endfor %}
+    {% endif %}
+    </div>
 </table>
 <form id="searchForm" method="get" action="{% url "wiki:wiki_post_index" %}">
     <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">

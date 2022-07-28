@@ -1,25 +1,40 @@
 <nav class="navbar navbar-light navbar-expand-md py-3">
-    <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url "posts:main_index" %}"><span
-                class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><svg
-                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                    viewBox="0 0 16 16" class="bi bi-pencil">
-                    <path
-                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z">
-                    </path>
-                </svg></span><span>knit</span></a><button data-bs-toggle="collapse" class="navbar-toggler"
-            data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span
-                class="navbar-toggler-icon"></span></button>
+    <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url "posts:main_index" %}">
+        <span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" id="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="black" viewBox="0 0 16 16">
+                <mask id="mask0_113_45" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+                <circle cx="8" cy="8" r="8" fill="#D9D9D9"/>
+                </mask>
+                <g mask="url(#mask0_113_45)">
+                <path d="M-5.42902 11.1761L8.94489 -4.36502L10.5627 -3.13342L-3.81119 12.4077L-2.19336 13.6393L12.1805 -1.90183L13.7984 -0.670244L-0.575535 14.8709L1.04229 16.1025L3.16776 13.8044M15.4162 0.561346L13.2547 2.89836M13.2547 2.89836L20.5349 8.44051L19.0939 9.99852L11.8137 4.45636M13.2547 2.89836L11.8137 4.45636M11.8137 4.45636L10.3727 6.01437M10.3727 6.01437L17.6529 11.5565L16.212 13.1145L8.93173 7.57237M10.3727 6.01437L8.93173 7.57237M8.93173 7.57237L7.49074 9.13038M7.49074 9.13038L14.771 14.6725L13.33 16.2305L6.04974 10.6884M7.49074 9.13038L6.04974 10.6884M6.04974 10.6884L4.60875 12.2464M4.60875 12.2464L11.889 17.7885L10.448 19.3466L3.16776 13.8044M4.60875 12.2464L3.16776 13.8044" stroke="black" stroke-width="1"/>
+                </g>
+            </svg>
+        </span>
+        <span><strong>KNIT VIBE</strong></span>
+    </a>
+    <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2">
+        <span class="visually-hidden">Toggle navigation</span>
+        <span class="navbar-toggler-icon"></span>
+    </button>
         <div class="collapse navbar-collapse" id="navcol-2">
             <!--div class="btn-group" role="group"><button class="btn btn-primary" type="button">+</button><button
                     class="btn btn-primary" type="button">-</button></div-->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link active" href="{% url "posts:main_index" %}">목록</a></li>
                 <li class="nav-item"><a class="nav-link active" href="{% url "posts:posts_index" %}">자유 게시판</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{% url "posts:patterns_index" %}">창작 패턴</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">뜨개 도구 모음</a>
+                    <div class="dropdown-menu">
+                    <!--a class="dropdown-item disable" href="#">목록으로 보기</a>
+                    <div class="dropdown-divider"></div-->
+                    <a class="dropdown-item" href="{% url "posts:patterns_index" %}">창작 패턴</a>
+                    <!--a class="dropdown-item" href="#">Something else here</a-->
+                    </div>
+                </li>
                 <li class="nav-item"><a class="nav-link active" href="{% url "wiki:wiki_post_index" %}">뜨개 위키</a></li>
                 <li>
                     {% if user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
+                    <a class="nav-link" href="{% url 'common:logout' %}">{{ user.profile.nickname }} - {{user.username}} (로그아웃)</a>
                     {% else %}
                     <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
                     {% endif %}

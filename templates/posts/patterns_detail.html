@@ -3,10 +3,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ pattern.title }}</h1>
+            <h2>{{ pattern.title }}</h2>
             <div class="row">
                 <div class="col">
-                    <strong>{{ pattern.author.username }}</strong>
+                    {% comment %} <strong>{{ pattern.author.username }}</strong> {% endcomment %}
+                    <strong>{{ pattern.author.profile.nickname }}</strong>
                     <small>{{ pattern.created_at|date:"y/m/d H:i" }}</small>
                     {% if user.is_authenticated %}
                         <a href="{% url "posts:pattern_like" pattern.id %}">{{ pattern.likes }} likes</a>

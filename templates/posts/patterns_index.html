@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>창작 배색 패턴 <a class="btn btn-custom-common" role="button" href={% url "posts:patterns_create" %}>패턴 만들기</a></h1>
+            <h2>창작 배색 패턴 <a class="btn btn-custom-common" role="button" href={% url "posts:patterns_create" %}>패턴 만들기</a></h2>
         </div>
     </div>
 </div>
@@ -29,7 +29,8 @@
                             <h4 class="card-title">{{ pattern.title }}</h4>
                             <h6>♥{{ pattern.likes }}</p>
                         </div>
-                        <h6 class="text-muted card-subtitle mb-2">{{ pattern.author.username }}</h6>
+                        {% comment %} <h6 class="text-muted card-subtitle mb-2">{{ pattern.author.username }}</h6> {% endcomment %}
+                        <h6 class="text-muted card-subtitle mb-2">{{ pattern.author.profile.nickname }}</h6>
                         <table class="pattern-table" id="table-{{ pattern.id }}">
                         </table>
 
@@ -64,7 +65,7 @@
                     var new_td = document.createElement('td');
                     new_td.setAttribute('class', 'pattern-cell');
                     //console.log(i, j, (pattern_list_json_parsed["pattern_list"][i][j]));
-                    if ((pattern_list_json_parsed["pattern_list"][i][j]) != "color-1") {
+                    if ((pattern_list_json_parsed["pattern_list"][i][j]) != null) {
                         new_td.setAttribute('style', 'background-color:' + color_list_json_parsed["color_list"][Number((
                             pattern_list_json_parsed["pattern_list"][i][j]).split('-')[1])]);
 
@@ -72,6 +73,21 @@
                     new_tr.appendChild(new_td);
                 }
             }
+            {% comment %} for (i = 0; i < col_length; i++) {
+                new_tr = document.createElement('tr');
+                document.getElementById("table-{{ pattern.id }}").appendChild(new_tr);
+                for (j = 0; j < row_length; j++) {
+                    var new_td = document.createElement('td');
+                    new_td.setAttribute('class', 'pattern-cell');
+                    console.log(i, j, (temp2["pattern_list"][i][j]));
+                    if ((temp2["pattern_list"][i][j]) != null) {
+                        new_td.setAttribute('style', 'background-color:' + temp4["color_list"][Number((temp2[
+                            "pattern_list"][i][j]).split('-')[1])]);
+
+                    }
+                    new_tr.appendChild(new_td);
+                }
+            } {% endcomment %}
         </script>
         {% endfor %}
     </div>

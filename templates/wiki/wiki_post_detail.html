@@ -3,23 +3,16 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ wikiPost.name }}</h1>
-            <div class="row">
-                <div class="col">
-                    <strong>{{ wikiPost.author.username }}</strong>
-                    <small>{{ wikiPost.created_at }}</small>
+            <h2>{{ wikiPost.name }}</h2>
 
-                    <div class="my-3">
-
-                        <a href="{% url 'wiki:wiki_post_modify' wikiPost.name  %}" 
-                        class="btn btn-sm btn-outline-secondary">수정</a>
-                        <a href="{% url 'wiki:wiki_post_history' wikiPost.name  %}" 
-                        class="btn btn-sm btn-outline-secondary">역사</a>
-
-                    </div>
-                </div>
-            </div>
             <p>{{ wikiPost.content|safe }}</p>
+
+            <div>
+                <a href="{% url 'wiki:wiki_post_modify' wikiPost.name  %}" 
+                class="badge badge-primary">수정</a>
+                <a href="{% url 'wiki:wiki_post_history' wikiPost.name  %}" 
+                class="badge badge-primary">역사</a>
+            </div>
         </div>
     </div>
 

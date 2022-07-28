@@ -4,10 +4,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>{{ post.title }}</h1>
+            <h2>{{ post.title }}</h2>
             <div class="row">
                 <div class="col">
-                    <strong>{{ post.author.username }}</strong>
+                    {% comment %} <strong>{{ post.author.username }}</strong> {% endcomment %}
+                    <strong>{{ post.author.profile.nickname }}</strong>
                     <small>{{ post.created_at|date:"y/m/d H:i" }}</small>
                     {% if user.is_authenticated %}
                         <small>{{ post.likes }} likes</small>
@@ -24,13 +25,13 @@
                         <a href="{% url "posts:edit" post.id %}">Edit</a>
                         <a href="{% url "posts:delete" post.id %}">Delete</a>
                     {% endif %} {% endcomment %}
-                    <div class="my-3">
-                        {% if request.user == post.author %}
-                        <a href="{% url 'posts:post_modify' post.id  %}" 
-                        class="btn btn-sm btn-outline-secondary">수정</a>
-                        <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'posts:post_delete' post.id  %}">삭제</a>
-                        {% endif %}
+                    <div style="float:right">
+                    {% if request.user == post.author %}
+                    <a href="{% url 'posts:post_modify' post.id  %}" class="badge badge-primary">수정</a>
+                    <a href="javascript:void(0)" class="delete badge badge-primary" data-uri="{% url 'posts:post_delete' post.id  %}">삭제</a>
+                    {% endif %}
                     </div>
+
                 </div>
             </div>
             <p>{{ post.content|safe }}</p>
@@ -59,7 +60,8 @@
 
             <div class="col-md-12">
 
-                <strong>{{ comment.author.username }}</strong>
+                {% comment %} <strong>{{ comment.author.username }}</strong> {% endcomment %}
+                <strong>{{ comment.author.profile.nickname }}</strong>
                 <small>{{ comment.created_at }}</small>
                 <p class="text-justify ">{{ comment.content }}</p> <!--safe????-->
 

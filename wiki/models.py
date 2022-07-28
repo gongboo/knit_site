@@ -14,7 +14,7 @@ class WikiPost(models.Model):
     #modify_date = models.DateTimeField(null=True, blank=True)
     #author= models.ForeignKey(User, on_delete=models.CASCADE)
     #changed_by = models.ForeignKey('auth.User')
-    changed_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    changed_by = models.ForeignKey(User, on_delete=models.SET("탈퇴한 사용자"))
     history = HistoricalRecords(cascade_delete_history=True)
 
     @property

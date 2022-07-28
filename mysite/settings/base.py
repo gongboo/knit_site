@@ -158,7 +158,7 @@ SUMMERNOTE_CONFIG = {
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
+            ['insert', ['link']], # , 'picture', 'video'
             # ['view', ['fullscreen', 'codeview', 'help']],
         ],
         'lang': 'ko-KR',
@@ -179,3 +179,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 # enable indexing on history_date (default setting)
 SIMPLE_HISTORY_DATE_INDEX = True
+
