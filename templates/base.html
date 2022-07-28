@@ -20,8 +20,12 @@
     {% endblock %}
 
     {% include 'footer.html' %}
-    <!-- popper js Development version -->
+    {% comment %} <!-- popper js Development version -->
     <script src="https://unpkg.com/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+     {% endcomment %}
+    <!-- Production version -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    
     <script src={% static "bootstrap.min.js"%}></script>
 
 
